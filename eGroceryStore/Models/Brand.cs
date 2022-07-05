@@ -9,5 +9,8 @@
         public string LogoUrl { get; set; }
 
         public string Description { get; set; }
+
+        //Relationships
+        public List<Product> Products { get; set; }
     }
 }
