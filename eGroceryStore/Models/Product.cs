@@ -7,9 +7,11 @@ namespace eGroceryStore.Models
         [Key]
         public int Id { get; set; }
 
+        public string ProductPictureUrl { get; set; }
+
         public string Name { get; set; }
 
-        public string ProductBrand { get; set; }
+        public Brand ProductBrand { get; set; }
 
         public double Price { get; set; }
 
