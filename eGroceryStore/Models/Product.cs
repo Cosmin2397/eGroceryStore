@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eGroceryStore.Models
 {
@@ -11,8 +12,6 @@ namespace eGroceryStore.Models
 
         public string Name { get; set; }
 
-        public Brand ProductBrand { get; set; }
-
         public double Price { get; set; }
 
         public int ProductStock { get; set; }
@@ -20,5 +19,17 @@ namespace eGroceryStore.Models
         public string  Description { get; set; }
 
         public string Ingredients { get; set; }
+
+
+        //Relationships
+        public int BrandId { get; set; }
+
+        [ForeignKey("BrandId")]
+        public Brand Brand { get; set; }
+
+        public int CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; }
     }
 }
