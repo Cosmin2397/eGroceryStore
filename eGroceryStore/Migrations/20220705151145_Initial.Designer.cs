@@ -10,7 +10,7 @@ using eGroceryStore.Data;
 
 namespace eGroceryStore.Migrations
 {
-    [DbContext(typeof(StoreDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20220705151145_Initial")]
     partial class Initial
     {

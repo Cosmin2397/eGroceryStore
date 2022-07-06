@@ -9,7 +9,7 @@ using eGroceryStore.Data;
 
 namespace eGroceryStore.Migrations
 {
-    [DbContext(typeof(StoreDbContext))]
+    [DbContext(typeof(AppDbContext))]
     partial class StoreDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

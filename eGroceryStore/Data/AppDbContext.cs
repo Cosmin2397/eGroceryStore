@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eGroceryStore.Data
 {
-    public class StoreDbContext : DbContext
+    public class AppDbContext : DbContext
     {
-        public StoreDbContext(DbContextOptions<StoreDbContext> options) 
+        public AppDbContext(DbContextOptions<AppDbContext> options) 
         : base(options)
         {
         }
