@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "List of Product";
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 col-xs-6 border-primary mb-3">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white" style="text-align:center">
+                            <p class="card-text">
+                                <h5 class="card-title">@item.Name</h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="@item.ProductPictureUrl" width="100%" alt="@item.Name">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text"><b>Brand: </b>@item.Brand.Name</p>
+                            <p class="card-text"><b>Category: </b>@item.Category.Name</p>
+                            <p class="card-text"><b>Stock: </b>@item.ProductStock pieces</p>
+                            <p class="card-text ">
+                                <b>Status: </b>
+                                @if (@item.ProductStock > 0)
+                                {
+                                    <span class="badge bg-success text-white">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger text-white">Out of stock</span>
+                                }
+                            </p>
+                            <p class="card-text"><b>Stock: </b>@item.Price.ToString("c")</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer ">
+                            <p class="card-text">
+                                <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
+                                    <i class="bi bi-eye-fill"></i> Show Details
+                                </a>
+                                <input class="btn btn-secondary" type="number" value="1" style="width:70px; margin-left:20px;margin-right:20px"/>
+                                <a class="btn btn-success text-white"> <i class="bi bi-cart-plus"></i> Add to Cart)</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div style="position:center; right: 25px; bottom: 25px;" class="text-white">
+        <a class="btn btn-success text-white" asp-action="Create"> <i class="bi bi-cart-plus"></i> Add new product</a>
+    </div>
+</div>

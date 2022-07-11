@@ -1,0 +1,55 @@
+﻿@model eGroceryStore.Models.Product
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Product</h4>
+<hr />
+
+<div class="container">  
+  <form asp-action="Create">
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <fieldset>
+      <label asp-for="ProductPictureUrl" class="control-label"></label>
+      <input asp-for="ProductPictureUrl" class="form-control" />
+      <span asp-validation-for="ProductPictureUrl" class="text-danger"></span>
+    </fieldset>
+    <fieldset>
+       <label asp-for="Name" class="control-label"></label>
+       <input asp-for="Name" class="form-control" />
+       <span asp-validation-for="Name" class="text-danger"></span>
+    </fieldset>
+    <fieldset>
+      <label asp-for="Price" class="control-label"></label>
+      <input asp-for="Price" class="form-control" />
+      <span asp-validation-for="Price" class="text-danger"></span>
+    </fieldset>
+    <fieldset>
+      <label asp-for="ProductStock" class="control-label"></label>
+      <input asp-for="ProductStock" class="form-control" />
+      <span asp-validation-for="ProductStock" class="text-danger"></span>
+    </fieldset>
+    <fieldset>
+      <label asp-for="BrandId" class="control-label"></label>
+      <select asp-for="BrandId" class ="form-control" asp-items="ViewBag.BrandId"></select>
+    </fieldset>
+    <fieldset>
+      <label asp-for="CategoryId" class="control-label"></label>
+      <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+    </fieldset>
+    <fieldset>
+      <input type="submit" value="Create" class="btn btn-outline-succes float-right" />
+      <a class= "btn btn-outline-secondary" asp-action="Index">Show Products</a>
+    </fieldset>
+    <fieldset><a asp-action="Index">Back to List</a></fieldset>
+  </form>
+ 
+  
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,5 +1,6 @@
 ﻿using eGroceryStore.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace eGroceryStore.Controllers
 {
@@ -12,10 +13,11 @@ namespace eGroceryStore.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var data = _context.Categories.ToList();
-            return View();
+            var data = await _context.Categories.Include(p => p.Products).ToListAsync();
+            return View(data);
         }
+
     }
 }
