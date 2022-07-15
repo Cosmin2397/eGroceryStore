@@ -1,5 +1,7 @@
-﻿@model IEnumerable<Product>
-
+﻿@using Microsoft.AspNetCore.Identity
+@using eGroceryStore.Areas.Data
+@model IEnumerable<Product>
+@inject SignInManager<ApplicationUser> signInManager;
 @{
     ViewData["Title"] = "List of Product";
 }
@@ -54,7 +56,10 @@
             </div>
         </div>
     }
-    <div style="position:center; right: 25px; bottom: 25px;" class="text-white">
-        <a class="btn btn-success text-white" asp-action="Create"> <i class="bi bi-cart-plus"></i> Add new product</a>
+    @if (signInManager.IsSignedIn(User) && User.IsInRole("admin"))
+    {
+        <div style="position:center; right: 25px; bottom: 25px;" class="text-white">
+            <a class="btn btn-success text-white" asp-action="Create"> <i class="bi bi-cart-plus"></i> Add new product</a>
     </div>
+    }
 </div>

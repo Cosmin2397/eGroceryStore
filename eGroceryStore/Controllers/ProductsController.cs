@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using eGroceryStore.Data;
 using eGroceryStore.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eGroceryStore.Controllers
 {
@@ -46,6 +47,8 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
+
+        [Authorize(Roles ="admin")]
         // GET: Products/Create
         public IActionResult Create()
         {
@@ -55,6 +58,7 @@ namespace eGroceryStore.Controllers
         }
 
         // POST: Products/Create
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ProductPictureUrl,Name,Price,ProductStock,Description,Ingredients,BrandId,CategoryId")] Product product)
@@ -70,6 +74,7 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "admin")]
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -88,6 +93,7 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "admin")]
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -123,6 +129,7 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "admin")]
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -143,6 +150,8 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
+
+        [Authorize(Roles = "admin")]
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
