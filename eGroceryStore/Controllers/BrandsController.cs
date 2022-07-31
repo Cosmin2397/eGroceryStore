@@ -28,6 +28,13 @@ namespace eGroceryStore.Controllers
                           Problem("Entity set 'AppDbContext.Brands'  is null.");
         }
 
+        public async Task<IActionResult> BrandsList()
+        {
+            return _context.Brands != null ?
+                        View(await _context.Brands.ToListAsync()) :
+                        Problem("Entity set 'AppDbContext.Brands'  is null.");
+        }
+
         // GET: Brands/Details/5
         public async Task<IActionResult> Details(int? id)
         {

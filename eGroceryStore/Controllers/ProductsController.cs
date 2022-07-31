@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using eGroceryStore.Data;
 using eGroceryStore.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
+using eGroceryStore.ViewModels;
 
 namespace eGroceryStore.Controllers
 {
@@ -22,6 +24,12 @@ namespace eGroceryStore.Controllers
 
         // GET: Products
         public async Task<IActionResult> Index()
+        {
+            var appDbContext = _context.Products.Include(p => p.Brand).Include(p => p.Category);
+            return View(await appDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> ProductsList()
         {
             var appDbContext = _context.Products.Include(p => p.Brand).Include(p => p.Category);
             return View(await appDbContext.ToListAsync());

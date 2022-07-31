@@ -38,7 +38,7 @@
                                     <span class="badge bg-danger text-white">Out of stock</span>
                                 }
                             </p>
-                            <p class="card-text"><b>Stock: </b>@item.Price.ToString("c")</p>
+                            <p class="card-text"><b>Price: </b>@item.Price.ToString("c")</p>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -47,8 +47,7 @@
                                 <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-eye-fill"></i> Show Details
                                 </a>
-                                <input class="btn btn-secondary" type="number" value="1" style="width:70px; margin-left:20px;margin-right:20px"/>
-                                <a class="btn btn-success text-white"> <i class="bi bi-cart-plus"></i> Add to Cart)</a>
+                                <a class="btn btn-success text-white" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Id"><i class="bi bi-cart-plus"></i> Add to Cart</a>
                             </p>
                         </div>
                     </div>

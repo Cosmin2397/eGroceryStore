@@ -1,5 +1,8 @@
 using eGroceryStore.Areas.Data;
 using eGroceryStore.Data;
+using eGroceryStore.Data.Services;
+using eGroceryStore.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +16,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
-
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+});
+builder.Services.AddMemoryCache();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+builder.Services.AddScoped<IOrdersService, OrdersService>();
+builder.Services.AddScoped<IProductsService, ProductsService>();
+builder.Services.AddSession();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -29,7 +41,10 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
+
+app.UseSession();
 
 app.UseRouting();
 
@@ -44,3 +59,5 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+
