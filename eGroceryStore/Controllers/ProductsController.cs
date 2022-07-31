@@ -9,7 +9,6 @@ using eGroceryStore.Data;
 using eGroceryStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Globalization;
-using eGroceryStore.ViewModels;
 
 namespace eGroceryStore.Controllers
 {
@@ -29,6 +28,7 @@ namespace eGroceryStore.Controllers
             return View(await appDbContext.ToListAsync());
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ProductsList()
         {
             var appDbContext = _context.Products.Include(p => p.Brand).Include(p => p.Category);
@@ -177,6 +177,40 @@ namespace eGroceryStore.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+
+        public async Task<IActionResult> GetCategoryProducts(int id)
+        {
+            if (id == null || _context.Products == null)
+            {
+                return NotFound();
+            }
+
+            var data = await _context.Products.Include(p => p.Brand).Include(p => p.Category).Where(c => id == c.CategoryId).ToListAsync();
+
+            if (data == null)
+            {
+                return NotFound();
+            }
+            return View(data);
+        }
+
+
+        public async Task<IActionResult> GetBrandProducts(int id)
+        {
+            if (id == null || _context.Products == null)
+            {
+                return NotFound();
+            }
+
+            var data = await _context.Products.Include(p => p.Brand).Include(p => p.Category).Where(c => id == c.CategoryId).ToListAsync();
+
+            if (data == null)
+            {
+                return NotFound();
+            }
+            return View(data);
         }
 
         private bool ProductExists(int id)

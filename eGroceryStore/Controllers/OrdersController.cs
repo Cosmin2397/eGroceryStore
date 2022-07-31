@@ -2,6 +2,7 @@
 using eGroceryStore.Data.Services;
 using eGroceryStore.Models;
 using eGroceryStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eGroceryStore.Controllers
@@ -19,6 +20,7 @@ namespace eGroceryStore.Controllers
             _ordersService = ordersService;
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             string userId = "";

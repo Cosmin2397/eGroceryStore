@@ -4,41 +4,53 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Brand</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8 offset-2">
+            <h4 style="text-align:center">Edit brand</h4>
+
+        <div class="row">
+            <div class="col-md-8 offset-2"> 
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-md-4 offset-4 text-center">
+                <img width="100%" id="ImageUrlPreview" />
+            </div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <label asp-for="Name" class="control-label" style="font-size:20px"></label>
+                <input asp-for="Name" class="form-control form-control-lg" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LogoUrl" class="control-label"></label>
-                <input asp-for="LogoUrl" class="form-control" />
+                <label asp-for="LogoUrl" class="control-label" style="font-size:20px"></label>
+                <input asp-for="LogoUrl" class="form-control form-control-lg" />
                 <span asp-validation-for="LogoUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <label asp-for="Description" class="control-label" style="font-size:20px"></label>
+                <input asp-for="Description" class="form-control form-control-lg" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+            <div class="form-group" style="margin-top:10px;">
+                        <input type="submit" value="Update" class="btn btn-primary btn-lg"  />
+                        <a class="btn btn-secondary btn-lg" asp-action="Index">Show all</a>
+             </div>
+  </form>
+ 
+  </div>
+  </div>
+  </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            var output = document.getElementById("ImageUrlPreview");
+            output.src = $("#LogoUrl").val();
+        });
+        $("#LogoUrl").on("change", function () {
+            var output = document.getElementById("ImageUrlPreview");
+            output.src = $(this).val();
+        })
+    </script>
 }

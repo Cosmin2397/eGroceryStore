@@ -16,7 +16,10 @@
                 <div class="card-sl">
                     <div class="card-heading">@item.Name</div>
                     <div class="card-image"><img src="@item.LogoUrl" /></div>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="card-button"> Show More</a>
+                     <div class="btn-group d-flex" role="group">
+                    <a class="btn btn-success w-100" asp-controller="Products" asp-action="GetBrandProducts" asp-route-id="@item.Id"> Show Products</a>
+                    <a class="btn btn-outline-primary w-100" asp-action="Details" asp-route-id="@item.Id"> Show More</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -24,7 +27,7 @@
     }
     @if (signInManager.IsSignedIn(User) && User.IsInRole("admin"))
     {
-        <div style="position:center; right: 25px; bottom: 25px;" class="text-white">
+        <div style="position:center; margin-top:25px;" class="text-white">
             <a class="btn btn-success text-white" asp-action="Create"> <i class="bi bi-cart-plus"></i> Add new brand</a>
     </div>
     }

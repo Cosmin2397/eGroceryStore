@@ -7,43 +7,29 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class = "main-wrapper">
+        <div class = "container">
+            <div class = "product-div">
+                <div class = "product-div-left">
+                        <img class="prd-img" src = "@Model.LogoUrl" alt = "@Model.Name">
+                </div>
+                <div class = "product-div-right">
+                    <span class = "product-name">@Model.Name</span>
+                    <p class = "product-description">Description: @Model.Description</p>
 
-<div>
-    <h4>Brand</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LogoUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LogoUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-</div>
-@if (signInManager.IsSignedIn(User) && User.IsInRole("admin"))
-    {
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-        <a asp-action="Index">Back to List</a> |
-        <a asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>
+                <div class = "btn-groups">
+                 @if (signInManager.IsSignedIn(User) && User.IsInRole("admin"))
+                    {
+                        <a  class="btn btn-primary btn-lg" asp-action="Index">Back to List</a>
+                        <a class="btn btn-warning btn-lg" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+                        <a  class="btn btn-danger btn-lg" asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>
+                    }
+                    else
+                    {
+                    <a  class="btn btn-primary btn-lg" asp-action="Index">Back to List</a>
+                    }
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
-}
-else
-{
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-}

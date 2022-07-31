@@ -16,12 +16,12 @@ namespace eGroceryStore.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             var data = await _context.Categories.Include(p => p.Products).ToListAsync();
             return View(data);
         }
-
 
         [Authorize(Roles = "admin")]
         public IActionResult Create()
