@@ -31,5 +31,11 @@ namespace eGroceryStore.Controllers
             return View(users);
         }
 
+        public async Task<IActionResult> UserData()
+        {
+            var user = await  _userManager.GetUserAsync(HttpContext.User);
+            return View(user);
+        }
+
     }
 }

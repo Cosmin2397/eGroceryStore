@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-md-8 offset-2">
         <p>
-            <h4>List of all your orders</h4>
+            <h4>List of all orders</h4>
         </p>
 
         <table class="table">
@@ -16,6 +16,7 @@
                     <th>Order ID</th>
                     <td>Items</td>
                     <th>Total</th>
+                    <th>User</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +39,7 @@
                     <td class="align-middle">
                         @order.OrderItems.Select(m => m.Product.Price * m.Quantity).Sum().ToString("c")
                     </td>
+                    <td class="align-middle">@order.Email</td>
                 </tr>
                 }
             </tbody>

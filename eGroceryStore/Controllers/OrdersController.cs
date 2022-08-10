@@ -1,9 +1,12 @@
-﻿using eGroceryStore.Data;
+﻿using eGroceryStore.Areas.Data;
+using eGroceryStore.Data;
 using eGroceryStore.Data.Services;
 using eGroceryStore.Models;
 using eGroceryStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace eGroceryStore.Controllers
 {
@@ -12,20 +15,30 @@ namespace eGroceryStore.Controllers
         private readonly ShoppingCart _shoppingCart;
         private readonly IProductsService _productsService;
         private readonly IOrdersService _ordersService;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
-        public OrdersController(IProductsService productsService, ShoppingCart shoppingCart, IOrdersService ordersService)
+        public OrdersController(IProductsService productsService, ShoppingCart shoppingCart, IOrdersService ordersService, UserManager<ApplicationUser> userManager)
         {
             _productsService = productsService;
             _shoppingCart = shoppingCart;
             _ordersService = ordersService;
+            _userManager = userManager;
         }
 
-        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
-            string userId = "";
+            var user = await GetCurrentUserAsync();
+            string userId = user.Id;
 
             var orders = await _ordersService.GetOrdersByUserIdAsync(userId);
+            return View(orders);
+        }
+
+        public async Task<IActionResult> GetAllOrders()
+        {
+
+            var orders = await _ordersService.GetOrdersAsync();
             return View(orders);
         }
 
@@ -68,8 +81,9 @@ namespace eGroceryStore.Controllers
         public async Task<IActionResult> CompleteOrder()
         {
             var items = _shoppingCart.GetShoppingCartItems();
-            string userId = "";
-            string userEmailAddress = "";
+            var user = await GetCurrentUserAsync();
+            string userId = user.Id;
+            string userEmailAddress = user.Email;
 
             await _ordersService.StoreOrderAsync(items, userId, userEmailAddress);
             await _shoppingCart.ClearShoppingCartAsync();

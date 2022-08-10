@@ -1,4 +1,5 @@
 ﻿using eGroceryStore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace eGroceryStore.Data.Services
@@ -9,6 +10,13 @@ namespace eGroceryStore.Data.Services
         public OrdersService(AppDbContext context)
         {
             _context = context;
+        }
+
+        [Authorize(Roles = "admin")]
+        public async Task<List<Order>> GetOrdersAsync()
+        {
+            var orders = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Product).ToListAsync();
+            return orders;
         }
 
         public async Task<List<Order>> GetOrdersByUserIdAsync(string userId)
