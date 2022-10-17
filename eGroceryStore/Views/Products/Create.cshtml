@@ -17,7 +17,7 @@
           <img width="100%" id="ImageUrlPreview" />
     </div>
     <fieldset>
-      <label asp-for="ProductPictureUrl" class="control-label"></label>
+      <label asp-for="ProductPictureUrl" class="control-label">Product Picture URL</label>
       <input asp-for="ProductPictureUrl" class="form-control" />
       <span asp-validation-for="ProductPictureUrl" class="text-danger"></span>
     </fieldset>
@@ -32,7 +32,7 @@
       <span asp-validation-for="Price" class="text-danger"></span>
     </fieldset>
     <fieldset>
-      <label asp-for="ProductStock" class="control-label"></label>
+      <label asp-for="ProductStock" class="control-label">Stock</label>
       <input asp-for="ProductStock" class="form-control" />
       <span asp-validation-for="ProductStock" class="text-danger"></span>
     </fieldset>
@@ -47,11 +47,11 @@
       <span asp-validation-for="Ingredients" class="text-danger"></span>
     </fieldset>
     <fieldset>
-      <label asp-for="BrandId" class="control-label"></label>
+      <label asp-for="BrandId" class="control-label">Brand</label>
       <select asp-for="BrandId" class ="form-control" asp-items="ViewBag.BrandId"></select>
     </fieldset>
     <fieldset>
-      <label asp-for="CategoryId" class="control-label"></label>
+      <label asp-for="CategoryId" class="control-label">Category</label>
       <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
     </fieldset>
     <div class="form-group" style="margin-top:10px;">

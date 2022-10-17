@@ -28,11 +28,27 @@ namespace eGroceryStore.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user = await GetCurrentUserAsync();
-            string userId = user.Id;
+            ApplicationUser user = await GetCurrentUserAsync();
+            var currentUserId = user.Id;
+            var orders = await _ordersService.GetOrdersByUserIdAsync(currentUserId);
+            return View(orders);    
+        }
 
-            var orders = await _ordersService.GetOrdersByUserIdAsync(userId);
+
+        public async Task<IActionResult> GetOrderByUserId(string? user)
+        {
+            var orders = await _ordersService.GetOrdersByUserIdAsync(user);
             return View(orders);
+        }
+
+        public async Task<IActionResult> GetOrderById(int id)
+        {
+            var order = await _ordersService.GetOrdersByIdAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return View(order);
         }
 
         public async Task<IActionResult> GetAllOrders()

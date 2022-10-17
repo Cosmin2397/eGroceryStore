@@ -25,6 +25,12 @@ namespace eGroceryStore.Data.Services
             return orders;
         }
 
+        public async Task<Order> GetOrdersByIdAsync(int id)
+        {
+            var order = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Product).FirstOrDefaultAsync(n => n.Id == id);
+            return order;
+        }
+
         public async Task StoreOrderAsync(List<ShoppingCartItem> items, string userId, string userEmailAddress)
         {
             var order = new Order()

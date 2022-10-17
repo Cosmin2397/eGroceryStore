@@ -7,6 +7,12 @@
 }
 
 <div class="row">
+    @if(Model.Count() == 0)
+    {
+        <h5>No products yet...</h5>
+    }
+    else
+    {
     @foreach (var item in Model)
     {
         <div class="col-md-4 col-xs-6 border-primary mb-3">
@@ -19,13 +25,14 @@
                             </p>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <img src="@item.ProductPictureUrl" width="100%" alt="@item.Name">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="card-body">
                             <p class="card-text"><b>Brand: </b>@item.Brand.Name</p>
-                            <p class="card-text"><b>Category: </b>@item.Category.Name</p>
+                            <p class="card-text"><b>Category: </b></p>
+                            <p class="card-text">@item.Category.Name</p>
                             <p class="card-text"><b>Stock: </b>@item.ProductStock pieces</p>
                             <p class="card-text ">
                                 <b>Status: </b>
@@ -44,10 +51,19 @@
                     <div class="col-md-12">
                         <div class="card-footer ">
                             <div class="btn-group d-flex" role="group">
-                                <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
-                                    <i class="bi bi-eye-fill"></i> Show Details
-                                </a>
-                                <a class="btn btn-success text-white" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Id"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                                @if (item.ProductStock > 0)
+                                {
+                                    <a class="btn btn-primary float-right" asp-action="Details" asp-route-id="@item.Id">
+                                        <i class="bi bi-eye-fill"></i> Show Details
+                                    </a>
+                                    <a class="btn btn-success text-white" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Id"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-primary float-right" asp-action="Details" asp-route-id="@item.Id">
+                                        <i class="bi bi-eye-fill"></i> Show Details
+                                    </a>
+                                }
                             </div>
                         </div>
                     </div>
@@ -60,5 +76,6 @@
         <div style="position:center; right: 25px; bottom: 25px;" class="text-white">
             <a class="btn btn-success text-white" asp-action="Create"> <i class="bi bi-cart-plus"></i> Add new product</a>
     </div>
+    }
     }
 </div>

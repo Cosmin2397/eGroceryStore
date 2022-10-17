@@ -29,9 +29,13 @@
                         <a class="btn btn-warning btn-lg" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
                         <a  class="btn btn-danger btn-lg" asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>
                     }
+                    else if(@Model.ProductStock > 0)
+                    {
+                        <a class="button-stl" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id"><i class = "fas fa-shopping-cart"></i> Add to Cart</a>
+                        <a  class="btn btn-secondary btn-lg" asp-action="Index">Back to List</a>
+                    }
                     else
                     {
-                        <a class="btn btn-primary btn-lg" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id"><i class = "fas fa-shopping-cart"></i> Add to Cart</a>
                         <a  class="btn btn-secondary btn-lg" asp-action="Index">Back to List</a>
                     }
                 </div>

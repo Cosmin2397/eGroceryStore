@@ -46,7 +46,7 @@ namespace eGroceryStore.Models
             }
             else
             {
-                if (shoppingCartItem.Quantity < product.ProductStock)
+                if (product.ProductStock > 0)
                 {
                     shoppingCartItem.Quantity++;
                     product.ProductStock--;

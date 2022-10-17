@@ -1,0 +1,41 @@
+﻿@model eGroceryStore.Models.Order
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="text-center">
+            <h2>Your order no. @Model.Id</h2>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderItems)
+                {
+                <tr>
+                    <td class="align-middle">@item.Quantity</td>
+                    <td class="align-middle">@item.Product.Name</td>
+                    <td class="align-middle">@item.Product.Price.ToString("c")</td>
+                    <td class="align-middle">@((item.Quantity*item.Product.Price).ToString("c"))</td>
+                </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b>Total:</b></td>
+                    <td class="align-middle">
+                        @Model.OrderItems.Select(m => m.Product.Price * m.Quantity).Sum().ToString("c")
+                    </td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

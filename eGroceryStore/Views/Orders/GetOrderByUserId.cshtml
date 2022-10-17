@@ -7,16 +7,15 @@
 <div class="row">
     <div class="col-md-8 offset-2">
         <p>
-            <h4>List of all orders</h4>
+            <h4>List of all user orders</h4>
         </p>
 
         <table class="table">
             <thead>
                 <tr>
                     <th>Order ID</th>
-                    <td>Items</td>
+                    <th>Items</th>
                     <th>Total</th>
-                    <th>User</th>
                     <th>Details</th>
                 </tr>
             </thead>
@@ -40,8 +39,7 @@
                     <td class="align-middle">
                         @order.OrderItems.Select(m => m.Product.Price * m.Quantity).Sum().ToString("c")
                     </td>
-                    <td class="align-middle">@order.Email</td>
-                                        <td class="align-middle">
+                    <td class="align-middle">
                         <a class="btn btn-primary float-right" asp-action="GetOrderById" asp-route-id="@order.Id">
                                     <i class="bi bi-eye-fill"></i> Show Details
                         </a>

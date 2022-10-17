@@ -5,7 +5,13 @@
     ViewData["Title"] = "List of Product";
 }
 
-<div class="row">
+<div class="row" style="text-align: center;">
+    @if(Model.Count() == 0)
+    {
+        <h5>No products yet...</h5>
+    }
+    else
+    {
     @foreach (var item in Model)
     {
         <div class="col-md-4 col-xs-6 border-primary mb-3">
@@ -43,15 +49,25 @@
                     <div class="col-md-12">
                         <div class="card-footer ">
                             <div class="btn-group d-flex" role="group">
-                                <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
-                                    <i class="bi bi-eye-fill"></i> Show Details
-                                </a>
-                                <a class="btn btn-success text-white" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Id"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                                @if (item.ProductStock > 0)
+                                {
+                                    <a class="btn btn-primary float-right" asp-action="Details" asp-route-id="@item.Id">
+                                        <i class="bi bi-eye-fill"></i> Show Details
+                                    </a>
+                                    <a class="btn btn-success text-white" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Id"><i class="bi bi-cart-plus"></i> Add to Cart</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-primary float-right" asp-action="Details" asp-route-id="@item.Id">
+                                        <i class="bi bi-eye-fill"></i> Show Details
+                                    </a>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    }
     }
 </div>
