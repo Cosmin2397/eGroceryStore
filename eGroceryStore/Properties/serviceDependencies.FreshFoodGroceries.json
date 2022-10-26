@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "mssql2": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/egrocerystoredbserver/databases/eGroceryStore_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:AppDbContext",
+      "dynamicId": null
+    }
+  }
+}
