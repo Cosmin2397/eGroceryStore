@@ -55,8 +55,7 @@ namespace eGroceryStore.Controllers
         }
 
 
-        [Authorize(Roles = "admin")]
-        // GET: Brands/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -79,7 +78,7 @@ namespace eGroceryStore.Controllers
         }
 
 
-        [Authorize(Roles = "admin")]
+        [Authorize]
         // GET: Brands/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -97,7 +96,7 @@ namespace eGroceryStore.Controllers
         }
 
 
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LogoUrl,Description")] Brand brand)
@@ -130,7 +129,7 @@ namespace eGroceryStore.Controllers
             return View(brand);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize]
         // GET: Brands/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -149,7 +148,7 @@ namespace eGroceryStore.Controllers
             return View(brand);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

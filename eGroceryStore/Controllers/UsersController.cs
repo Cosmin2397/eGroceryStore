@@ -24,7 +24,7 @@ namespace eGroceryStore.Controllers
             _db = db;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize]
         public IActionResult Index()
         {
             var users = _db.Users.ToList();
