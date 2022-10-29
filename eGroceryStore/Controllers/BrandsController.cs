@@ -28,7 +28,7 @@ namespace eGroceryStore.Controllers
                           Problem("Entity set 'AppDbContext.Brands'  is null.");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize]
         public async Task<IActionResult> BrandsList()
         {
             return _context.Brands != null ?
