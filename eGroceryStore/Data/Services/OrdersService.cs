@@ -31,12 +31,14 @@ namespace eGroceryStore.Data.Services
             return order;
         }
 
-        public async Task StoreOrderAsync(List<ShoppingCartItem> items, string userId, string userEmailAddress)
+        public async Task StoreOrderAsync(List<ShoppingCartItem> items, string userId, string userEmailAddress, string address)
         {
             var order = new Order()
             {
                 UserId = userId,
-                Email = userEmailAddress
+                Email = userEmailAddress,
+                Status = StatusEnum.Registred,
+                Address = address,
             };
             await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();

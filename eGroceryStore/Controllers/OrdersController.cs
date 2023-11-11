@@ -107,8 +107,9 @@ namespace eGroceryStore.Controllers
             var user = await GetCurrentUserAsync();
             string userId = user.Id;
             string userEmailAddress = user.Email;
+            string address = user.Address;
 
-            await _ordersService.StoreOrderAsync(items, userId, userEmailAddress);
+            await _ordersService.StoreOrderAsync(items, userId, userEmailAddress, address);
             await _shoppingCart.ClearShoppingCartAsync();
 
             return View("OrderCompleted");

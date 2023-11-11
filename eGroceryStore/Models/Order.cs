@@ -14,6 +14,8 @@ namespace eGroceryStore.Models
 
             public StatusEnum Status { get; set; }
 
+            public string Address { get; set; }
+
             public List<OrderItem> OrderItems { get; set; }
         }
 }
