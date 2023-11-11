@@ -60,21 +60,21 @@
             </div>
         </nav>
     </header>
-        <div id="wrapper">
+    <div id="wrapper">
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 @await Component.InvokeAsync("Category")
             </ul>
         </div>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - eGroceryStore 
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+    <footer class="border-top footer text-muted text-center">
+        <div class="container">
+            &copy; 2023 - eGroceryStore
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
