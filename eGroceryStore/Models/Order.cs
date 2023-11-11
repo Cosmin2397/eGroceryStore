@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using eGroceryStore.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace eGroceryStore.Models
 {
@@ -10,6 +11,8 @@ namespace eGroceryStore.Models
             public string Email { get; set; }
 
             public string UserId { get; set; }
+
+            public StatusEnum Status { get; set; }
 
             public List<OrderItem> OrderItems { get; set; }
         }

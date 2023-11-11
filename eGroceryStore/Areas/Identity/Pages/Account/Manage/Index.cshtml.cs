@@ -59,18 +59,23 @@ namespace eGroceryStore.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Address")]
+            public string Address { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var address = user.Address; 
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Address = address
             };
         }
 
@@ -107,6 +112,18 @@ namespace eGroceryStore.Areas.Identity.Pages.Account.Manage
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
+                    return RedirectToPage();
+                }
+            }
+
+            var address = user.Address; 
+            if (Input.Address != address)
+            {
+                user.Address = Input.Address; 
+                var setAddressResult = await _userManager.UpdateAsync(user);
+                if (!setAddressResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set address.";
                     return RedirectToPage();
                 }
             }
