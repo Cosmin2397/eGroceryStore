@@ -28,7 +28,7 @@ namespace eGroceryStore.Controllers
                           Problem("Entity set 'AppDbContext.Brands'  is null.");
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> BrandsList()
         {
             return _context.Brands != null ?
@@ -55,7 +55,7 @@ namespace eGroceryStore.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
@@ -65,6 +65,7 @@ namespace eGroceryStore.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,LogoUrl,Description")] Brand brand)
         {
@@ -78,7 +79,7 @@ namespace eGroceryStore.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         // GET: Brands/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -96,7 +97,7 @@ namespace eGroceryStore.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LogoUrl,Description")] Brand brand)
@@ -129,7 +130,7 @@ namespace eGroceryStore.Controllers
             return View(brand);
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         // GET: Brands/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -148,7 +149,7 @@ namespace eGroceryStore.Controllers
             return View(brand);
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

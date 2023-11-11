@@ -26,6 +26,7 @@ namespace eGroceryStore.Controllers
             _userManager = userManager;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             ApplicationUser user = await GetCurrentUserAsync();
@@ -34,13 +35,14 @@ namespace eGroceryStore.Controllers
             return View(orders);    
         }
 
-
+        [Authorize]
         public async Task<IActionResult> GetOrderByUserId(string? user)
         {
             var orders = await _ordersService.GetOrdersByUserIdAsync(user);
             return View(orders);
         }
 
+        [Authorize]
         public async Task<IActionResult> GetOrderById(int id)
         {
             var order = await _ordersService.GetOrdersByIdAsync(id);
@@ -51,6 +53,7 @@ namespace eGroceryStore.Controllers
             return View(order);
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetAllOrders()
         {
 
@@ -58,6 +61,7 @@ namespace eGroceryStore.Controllers
             return View(orders);
         }
 
+        [Authorize]
         public IActionResult ShoppingCart()
         {
             var items = _shoppingCart.GetShoppingCartItems();
@@ -72,6 +76,7 @@ namespace eGroceryStore.Controllers
             return View(response);
         }
 
+        [Authorize]
         public async Task<IActionResult> AddItemToShoppingCart(int id)
         {
             var item = await _productsService.GetProductByIdAsync(id);
@@ -83,6 +88,7 @@ namespace eGroceryStore.Controllers
             return RedirectToAction(nameof(ShoppingCart));
         }
 
+        [Authorize]
         public async Task<IActionResult> RemoveItemFromShoppingCart(int id)
         {
             var item = await _productsService.GetProductByIdAsync(id);
@@ -94,6 +100,7 @@ namespace eGroceryStore.Controllers
             return RedirectToAction(nameof(ShoppingCart));
         }
 
+        [Authorize]
         public async Task<IActionResult> CompleteOrder()
         {
             var items = _shoppingCart.GetShoppingCartItems();

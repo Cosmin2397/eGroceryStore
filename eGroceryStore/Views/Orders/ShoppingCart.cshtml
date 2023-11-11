@@ -1,5 +1,8 @@
-﻿@using eGroceryStore.ViewModels; 
-@model ShoppingCartViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@using eGroceryStore.Areas.Data
+@using eGroceryStore.ViewModels; 
+@model ShoppingCartViewModel;
+@inject SignInManager<ApplicationUser> signInManager;
 
 @{ 
     ViewData["Title"] = "Shopping cart summary";
@@ -7,47 +10,51 @@
 
 <div class="row">
     <div class="col-md-8 offset-2">
+        @if (Model.ShoppingCart.ShoppingCartItems.Count > 0 && signInManager.IsSignedIn(User))
+        {
         <div class="text-center">
             <h2>You shopping cart summary</h2>
         </div>
+        
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Selected amount</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Selected amount</th>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Subtotal</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
-                {
-                <tr>
-                    <td class="align-middle">@item.Quantity</td>
-                    <td class="align-middle">@item.Product.Name</td>
-                    <td class="align-middle">@item.Product.Price.ToString("c")</td>
-                    <td class="align-middle">@((item.Quantity*item.Product.Price).ToString("c"))</td>
-                    <td class="align-middle">
-                        @if (item.Product.ProductStock > 0)
-                            {
-                        <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart"
+                    @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
+                    {
+                        <tr>
+                            <td class="align-middle">@item.Quantity</td>
+                            <td class="align-middle">@item.Product.Name</td>
+                            <td class="align-middle">@item.Product.Price.ToString("c")</td>
+                            <td class="align-middle">@(
+                        (item.Quantity * item.Product.Price).ToString("c"))</td>
+                            <td class="align-middle">
+                                @if (item.Product.ProductStock > 0)
+                                {
+                                    <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart"
                            asp-route-id="@item.Product.Id"><i class="bi bi-cart-dash"></i>
-                        </a>
-                        <a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart"
+                                    </a>
+                                    <a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart"
                            asp-route-id="@item.Product.Id"><i class="bi bi-cart-plus"></i>
-                                </a>
-                            }
-                            else
-                            {
-                            <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart"
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart"
                             asp-route-id="@item.Product.Id"><i class="bi bi-cart-dash"></i>
-                            </a>  
-                            }
-                        </td>
-                </tr>
-                }
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                        }
             </tbody>
             <tfoot>
                 <tr>
@@ -80,6 +87,22 @@
                 }
             </div>
         </div>
+        }
+        else if (Model.ShoppingCart.ShoppingCartItems.Count < 1 && signInManager.IsSignedIn(User))
+        {
+        <div class="text-center" style="padding-bottom:20px">No products yet!</div>
+            <div class="text-center">
+                <div class="btn-group">
+                    <a class="btn btn-outline-success" asp-controller="Products" asp-action="Index">
+                            Add items
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="text-center" style="padding-bottom:20px">Please register or login!</div>
+        }
 
     </div>
 </div>

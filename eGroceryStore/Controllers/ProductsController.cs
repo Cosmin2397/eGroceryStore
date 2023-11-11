@@ -28,7 +28,7 @@ namespace eGroceryStore.Controllers
             return View(await appDbContext.ToListAsync());
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ProductsList()
         {
             var appDbContext = _context.Products.Include(p => p.Brand).Include(p => p.Category);
@@ -56,7 +56,7 @@ namespace eGroceryStore.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         // GET: Products/Create
         public IActionResult Create()
         {
@@ -66,7 +66,7 @@ namespace eGroceryStore.Controllers
         }
 
         // POST: Products/Create
-        [Authorize]
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ProductPictureUrl,Name,Price,ProductStock,Description,Ingredients,BrandId,CategoryId")] Product product)
@@ -82,7 +82,7 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -101,7 +101,7 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -137,7 +137,7 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -159,7 +159,7 @@ namespace eGroceryStore.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

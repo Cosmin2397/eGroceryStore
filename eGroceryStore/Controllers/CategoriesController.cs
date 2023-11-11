@@ -23,7 +23,7 @@ namespace eGroceryStore.Controllers
             return View(data);
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
@@ -31,6 +31,7 @@ namespace eGroceryStore.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
         {
                 _context.Add(category);
@@ -39,7 +40,7 @@ namespace eGroceryStore.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Categories == null)
@@ -56,7 +57,7 @@ namespace eGroceryStore.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
@@ -89,7 +90,7 @@ namespace eGroceryStore.Controllers
             return View(category);
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Categories == null)
@@ -107,7 +108,7 @@ namespace eGroceryStore.Controllers
             return View(category);
         }
 
-        [Authorize]
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
