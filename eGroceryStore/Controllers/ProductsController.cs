@@ -204,7 +204,7 @@ namespace eGroceryStore.Controllers
                 return NotFound();
             }
 
-            var data = await _context.Products.Include(p => p.Brand).Include(p => p.Category).Where(c => id == c.CategoryId).ToListAsync();
+            var data = await _context.Products.Include(p => p.Brand).Include(p => p.Category).Where(c => id == c.BrandId).ToListAsync();
 
             if (data == null)
             {

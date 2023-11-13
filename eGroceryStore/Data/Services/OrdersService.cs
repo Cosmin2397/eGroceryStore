@@ -56,5 +56,23 @@ namespace eGroceryStore.Data.Services
             }
             await _context.SaveChangesAsync();
         }
+
+
+        public async Task UpdateOrderAsync(int orderId, StatusEnum newStatus)
+        {
+            var order = await _context.Orders.FindAsync(orderId);
+
+            if (order != null)
+            {
+                order.Status = newStatus;
+
+                _context.Orders.Update(order);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ApplicationException($"Order with ID {orderId} not found.");
+            }
+        }
     }
 }

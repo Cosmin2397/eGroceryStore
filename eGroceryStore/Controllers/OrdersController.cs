@@ -61,6 +61,23 @@ namespace eGroceryStore.Controllers
             return View(orders);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> ModifyOrderStatus(int id, string status)
+        {
+            try
+            {
+                var newStatus = Enum.Parse<StatusEnum>(status);
+                await _ordersService.UpdateOrderAsync(id, newStatus);
+
+                return RedirectToAction("GetAllOrders");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error");
+            }
+        }
+
         [Authorize]
         public IActionResult ShoppingCart()
         {

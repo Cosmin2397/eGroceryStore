@@ -8,7 +8,7 @@ namespace eGroceryStore.Areas.Data
 
         public string LastName { get; set; }
 
-        public string Address { get; set; }
+        public string Address { get; set; } = String.Empty;
     }
 
     public class ApplicationRole : IdentityRole

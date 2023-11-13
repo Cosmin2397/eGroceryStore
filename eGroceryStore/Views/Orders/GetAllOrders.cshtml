@@ -1,6 +1,6 @@
 ﻿@model List<Order>
 
-@{ 
+@{
     ViewData["Title"] = "All orders";
 }
 
@@ -8,10 +8,10 @@
     <div class="col-md-8 offset-2">
         @if (Model.Count > 0)
         {
-        <p>
-            <h4>List of all orders</h4>
-        </p>
-        
+            <p>
+                <h4>List of all orders</h4>
+            </p>
+
             <table class="table">
                 <thead>
                     <tr>
@@ -22,6 +22,7 @@
                         <th>Status</th>
                         <th>Address</th>
                         <th>Details</th>
+                        <th>Change status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,27 +41,63 @@
                                         </li>
                                     }
                                 </ul>
-                    </td>
-                    <td class="align-middle">
-                        @order.OrderItems.Select(m => m.Product.Price * m.Quantity).Sum().ToString("c")
-                    </td>
-                    <td class="align-middle">@order.Email</td>
-                    <td class="align-middle">@Html.DisplayFor(model => order.Status)</td>
-                    <td class="align-middle">@order.Address</td>
-                    <td class="align-middle">
-                        <a class="btn btn-primary float-right" asp-action="GetOrderById" asp-route-id="@order.Id">
+                            </td>
+                            <td class="align-middle">
+                                @order.OrderItems.Select(m => m.Product.Price * m.Quantity).Sum().ToString("c")
+                            </td>
+                            <td class="align-middle">@order.Email</td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(model => order.Status)
+                            </td>
+                            <td class="align-middle">
+                                @Html.DisplayFor(model => order.Address)
+                            </td>
+                            <td class="align-middle">
+                                <a class="btn btn-primary float-right" asp-action="GetOrderById" asp-route-id="@order.Id">
                                     <i class="bi bi-eye-fill"></i> Show Details
-                        </a>
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
+                                </a>
+                             </td>
+                            <td class="align-middle">
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal-@order.Id">Change Status</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @foreach (var order in Model)
+            {
+                <div class="modal fade" id="statusModal-@order.Id" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel-@order.Id" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="statusModalLabel-@order.Id">Modify Status</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form asp-action="ModifyOrderStatus" asp-route-id="@order.Id" method="post">
+                                    <div class="form-group">
+                                        <label for="status">New Status:</label>
+                                        <select class="form-control" id="status" name="status">
+                                            <option value="Registred">Registred</option>
+                                            <option value="Processed">Processed</option>
+                                            <option value="Delivered">Delivered</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         }
         else
         {
             <div class="text-center" style="padding-bottom:20px">No orders yet!</div>
         }
-
     </div>
-</div> 
+</div>
+

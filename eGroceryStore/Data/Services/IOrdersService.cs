@@ -8,5 +8,6 @@ namespace eGroceryStore.Data.Services
         Task<List<Order>> GetOrdersByUserIdAsync(string userId);
         Task<List<Order>> GetOrdersAsync();
         Task<Order> GetOrdersByIdAsync(int id);
+        Task UpdateOrderAsync(int orderId, StatusEnum newStatus);
     }
 }
