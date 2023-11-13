@@ -182,36 +182,42 @@ namespace eGroceryStore.Controllers
 
         public async Task<IActionResult> GetCategoryProducts(int id)
         {
-            if (id == null || _context.Products == null)
+            var categoryExists = await _context.Categories.AnyAsync(c => c.Id == id);
+
+            if (!categoryExists)
             {
                 return NotFound();
             }
 
-            var data = await _context.Products.Include(p => p.Brand).Include(p => p.Category).Where(c => id == c.CategoryId).ToListAsync();
+            var data = await _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Category)
+                .Where(c => c.CategoryId == id)
+                .ToListAsync();
 
-            if (data == null)
-            {
-                return NotFound();
-            }
             return View(data);
         }
+
 
 
         public async Task<IActionResult> GetBrandProducts(int id)
         {
-            if (id == null || _context.Products == null)
+            var brandExists = await _context.Brands.AnyAsync(c => c.Id == id);
+
+            if (!brandExists)
             {
                 return NotFound();
             }
 
-            var data = await _context.Products.Include(p => p.Brand).Include(p => p.Category).Where(c => id == c.BrandId).ToListAsync();
+            var data = await _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Category)
+                .Where(c => c.BrandId == id)
+                .ToListAsync();
 
-            if (data == null)
-            {
-                return NotFound();
-            }
             return View(data);
         }
+
 
         private bool ProductExists(int id)
         {
