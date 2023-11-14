@@ -1,10 +1,10 @@
-﻿using eGroceryStore.Models;
+﻿using eGroceryStore.Data.Services;
 
 namespace eGroceryStore.ViewModels
 {
     public class ShoppingCartViewModel
     {
-        public ShoppingCart ShoppingCart { get; set; }
+        public IShoppingCart ShoppingCart { get; set; }
 
         public double ShoppingCartTotal { get; set; }
     }

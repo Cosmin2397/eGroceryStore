@@ -83,25 +83,6 @@ namespace eGroceryStore.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Products == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Id", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            return View(product);
-        }
-
-        [Authorize(Roles = "admin")]
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -116,7 +97,17 @@ namespace eGroceryStore.Controllers
             {
                 try
                 {
-                    _context.Update(product);
+                    // Instead of _context.Update(product), fetch the existing product from the context and update its properties
+                    var existingProduct = await _context.Products.FindAsync(id);
+
+                    if (existingProduct == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Update the properties of the existing product
+                    _context.Entry(existingProduct).CurrentValues.SetValues(product);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -136,6 +127,7 @@ namespace eGroceryStore.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
             return View(product);
         }
+
 
         [Authorize(Roles = "admin")]
         // GET: Products/Delete/5

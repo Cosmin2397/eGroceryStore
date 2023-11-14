@@ -1,13 +1,13 @@
 ﻿using eGroceryStore.Data;
+using eGroceryStore.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace eGroceryStore.Models
+namespace eGroceryStore.Data.Services
 {
-    public class ShoppingCart
+    public class ShoppingCart : IShoppingCart
     {
         public AppDbContext _context { get; set; }
-
         public string ShoppingCartId { get; set; }
         public List<ShoppingCartItem> ShoppingCartItems { get; set; }
 
@@ -41,8 +41,8 @@ namespace eGroceryStore.Models
                     Quantity = 1
                 };
 
-                    _context.ShoppingCartItems.Add(shoppingCartItem);
-                    product.ProductStock--;
+                _context.ShoppingCartItems.Add(shoppingCartItem);
+                product.ProductStock--;
             }
             else
             {

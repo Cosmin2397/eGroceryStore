@@ -39,13 +39,14 @@ namespace eGroceryStore.Controllers
         // GET: Brands/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Brands == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var brand = await _context.Brands
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (brand == null)
             {
                 return NotFound();
@@ -53,6 +54,7 @@ namespace eGroceryStore.Controllers
 
             return View(brand);
         }
+
 
 
         [Authorize(Roles = "admin")]
@@ -79,26 +81,28 @@ namespace eGroceryStore.Controllers
         }
 
 
-        [Authorize(Roles = "admin")]
         // GET: Brands/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Brands == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var brand = await _context.Brands.FindAsync(id);
+
             if (brand == null)
             {
                 return NotFound();
             }
+
             return View(brand);
         }
 
-
-        [Authorize(Roles = "admin")]
+        // POST: Brands/Edit/5
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,LogoUrl,Description")] Brand brand)
         {
@@ -129,6 +133,7 @@ namespace eGroceryStore.Controllers
             }
             return View(brand);
         }
+
 
         [Authorize(Roles = "admin")]
         // GET: Brands/Delete/5

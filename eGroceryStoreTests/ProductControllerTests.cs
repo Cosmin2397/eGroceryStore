@@ -23,14 +23,18 @@ namespace eGroceryStoreTests
 
         private void PopulateTestData(AppDbContext context)
         {
-            var brand = new Brand { Id = 1, Name = "Brand 1" };
-            var category = new Category { Id = 2, Name = "Category 2" };
+            if (!context.Products.Any())
+            {
+                var brand = new Brand { Id = 1, Name = "Brand 1" };
+                var category = new Category { Id = 2, Name = "Category 2" };
 
-            context.Products.Add(new Product { Id = 1, Name = "Product 1", Price = 10.0, ProductStock = 5, BrandId = brand.Id, CategoryId = category.Id, Brand = brand, Category = category });
-            context.Products.Add(new Product { Id = 2, Name = "Product 2", Price = 15.0, ProductStock = 10, BrandId = brand.Id, CategoryId = category.Id, Brand = brand, Category = category });
+                context.Products.Add(new Product { Id = 1, Name = "Product 1", Price = 10.0, ProductStock = 5, BrandId = brand.Id, CategoryId = category.Id, Brand = brand, Category = category });
+                context.Products.Add(new Product { Id = 2, Name = "Product 2", Price = 15.0, ProductStock = 10, BrandId = brand.Id, CategoryId = category.Id, Brand = brand, Category = category });
 
-            context.SaveChanges();
+                context.SaveChanges();
+            }
         }
+
 
         private ProductsController CreateControllerWithTestData(DbContextOptions<AppDbContext> options)
         {
@@ -45,11 +49,6 @@ namespace eGroceryStoreTests
 
         private ProductsController CreateControllerWithAdminUser(DbContextOptions<AppDbContext> options)
         {
-            using (var context = new AppDbContext(options))
-            {
-                PopulateTestData(context);
-            }
-
             var contextForController = new AppDbContext(options);
             var controller = new ProductsController(contextForController);
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
@@ -72,7 +71,12 @@ namespace eGroceryStoreTests
             // Arrange
             var options = CreateDbContextOptions("Index_ReturnsAViewResult_WithAListOfProducts");
 
-            var controller = CreateControllerWithTestData(options);
+            using (var context = new AppDbContext(options))
+            {
+                PopulateTestData(context);
+            }
+
+            var controller = new ProductsController(new AppDbContext(options));
 
             // Act
             var result = await controller.Index();
@@ -86,21 +90,27 @@ namespace eGroceryStoreTests
             Assert.Contains("Product 2", productNames);
         }
 
+
         [Fact]
         public async Task ProductsList_ReturnsViewResult_WhenUserIsAdmin()
         {
             // Arrange
             var options = CreateDbContextOptions("ProductsList_ReturnsViewResult_WhenUserIsAdmin");
 
-            var controller = CreateControllerWithAdminUser(options);
+            using (var context = new AppDbContext(options))
+            {
+                PopulateTestData(context);
 
-            // Act
-            var result = await controller.ProductsList();
+                var controller = CreateControllerWithAdminUser(options);
 
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<Product>>(viewResult.ViewData.Model);
-            Assert.Equal(2, model.Count());
+                // Act
+                var result = await controller.ProductsList();
+
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                var model = Assert.IsAssignableFrom<IEnumerable<Product>>(viewResult.ViewData.Model);
+                Assert.Equal(2, model.Count());
+            }
         }
 
         [Fact]
@@ -184,36 +194,35 @@ namespace eGroceryStoreTests
         }
 
         [Fact]
-        public async Task Edit_GET_ReturnsViewResult_WhenUserIsAdmin()
+        public async Task Edit_POST_RedirectsToIndex_WhenModelStateIsValid()
         {
             // Arrange
-            var options = CreateDbContextOptions("Edit_GET_ReturnsViewResult_WhenUserIsAdmin");
+            var options = CreateDbContextOptions("Edit_POST_RedirectsToIndex_WhenModelStateIsValid1");
 
-            var controller = CreateControllerWithAdminUser(options);
+            using (var context = new AppDbContext(options))
+            {
+                PopulateTestData(context);
+                var controller = CreateControllerWithAdminUser(options);
 
-            // Act
-            var result = await controller.Edit(1);
+                var product = new Product
+                {
+                    Id = 1,
+                    Name = "Edited Product",
+                    Price = 25.0,
+                    ProductStock = 15,
+                    BrandId = 1,
+                    CategoryId = 2,
+                };
 
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.NotNull(viewResult.ViewData["BrandId"]);
-            Assert.NotNull(viewResult.ViewData["CategoryId"]);
+                // Act
+                var result = await controller.Edit(1, product);
+
+                // Assert
+                var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+                Assert.Equal("Index", redirectToActionResult.ActionName);
+            }
         }
 
-        [Fact]
-        public async Task Edit_GET_ReturnsNotFoundResult_WhenIdIsNull()
-        {
-            // Arrange
-            var options = CreateDbContextOptions("Edit_GET_ReturnsNotFoundResult_WhenIdIsNull");
-
-            var controller = CreateControllerWithAdminUser(options);
-
-            // Act
-            var result = await controller.Edit(null);
-
-            // Assert
-            Assert.IsType<NotFoundResult>(result);
-        }
 
         [Fact]
         public async Task Edit_GET_ReturnsNotFoundResult_WhenProductIsNull()
@@ -221,40 +230,28 @@ namespace eGroceryStoreTests
             // Arrange
             var options = CreateDbContextOptions("Edit_GET_ReturnsNotFoundResult_WhenProductIsNull");
 
-            var controller = CreateControllerWithAdminUser(options);
-
-            // Act
-            var result = await controller.Edit(99);
-
-            // Assert
-            Assert.IsType<NotFoundResult>(result);
-        }
-
-        [Fact]
-        public async Task Edit_POST_RedirectsToIndex_WhenModelStateIsValid()
-        {
-            // Arrange
-            var options = CreateDbContextOptions("Edit_POST_RedirectsToIndex_WhenModelStateIsValid");
-
+            using (var context = new AppDbContext(options))
+            {
+                PopulateTestData(context);
+            }
 
             var controller = CreateControllerWithAdminUser(options);
             var product = new Product
             {
-                Id = 1,
+                Id = 2,
                 Name = "Edited Product",
                 Price = 25.0,
                 ProductStock = 15,
                 BrandId = 1,
                 CategoryId = 2,
             };
-
             // Act
-            var result = await controller.Edit(1, product);
+            var result = await controller.Edit(99, product);
 
             // Assert
-            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Index", redirectToActionResult.ActionName);
+            Assert.IsType<NotFoundResult>(result);
         }
+
 
         [Fact]
         public async Task Edit_POST_ReturnsNotFoundResult_WhenIdDoesNotMatchProduct()
@@ -287,19 +284,23 @@ namespace eGroceryStoreTests
             // Arrange
             var options = CreateDbContextOptions("Delete_ReturnsViewResult_WhenProductExists");
 
-            var controller = CreateControllerWithAdminUser(options);
+            using (var context = new AppDbContext(options))
+            {
+                PopulateTestData(context);
+                var controller = CreateControllerWithAdminUser(options);
 
-            // Act
-            var result = await controller.Delete(1);
+                // Act
+                var result = await controller.Delete(1);
 
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsType<Product>(viewResult.ViewData.Model);
-            Assert.Equal("Product 1", model.Name);
-            Assert.Equal(10.0, model.Price);
-            Assert.Equal(5, model.ProductStock);
-            Assert.Equal(1, model.BrandId);
-            Assert.Equal(2, model.CategoryId);
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                var model = Assert.IsType<Product>(viewResult.ViewData.Model);
+                Assert.Equal("Product 1", model.Name);
+                Assert.Equal(10.0, model.Price);
+                Assert.Equal(5, model.ProductStock);
+                Assert.Equal(1, model.BrandId);
+                Assert.Equal(2, model.CategoryId);
+            }
         }
 
         [Fact]

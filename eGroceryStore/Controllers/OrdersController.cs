@@ -1,7 +1,6 @@
 ﻿using eGroceryStore.Areas.Data;
 using eGroceryStore.Data;
 using eGroceryStore.Data.Services;
-using eGroceryStore.Models;
 using eGroceryStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,13 +11,13 @@ namespace eGroceryStore.Controllers
 {
     public class OrdersController : Controller
     {
-        private readonly ShoppingCart _shoppingCart;
+        private readonly IShoppingCart _shoppingCart;
         private readonly IProductsService _productsService;
         private readonly IOrdersService _ordersService;
         private readonly UserManager<ApplicationUser> _userManager;
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
-        public OrdersController(IProductsService productsService, ShoppingCart shoppingCart, IOrdersService ordersService, UserManager<ApplicationUser> userManager)
+        public OrdersController(IProductsService productsService, IShoppingCart shoppingCart, IOrdersService ordersService, UserManager<ApplicationUser> userManager)
         {
             _productsService = productsService;
             _shoppingCart = shoppingCart;
@@ -126,10 +125,16 @@ namespace eGroceryStore.Controllers
             string userEmailAddress = user.Email;
             string address = user.Address;
 
-            await _ordersService.StoreOrderAsync(items, userId, userEmailAddress, address);
-            await _shoppingCart.ClearShoppingCartAsync();
-
-            return View("OrderCompleted");
+            try
+            {
+                await _ordersService.StoreOrderAsync(items, userId, userEmailAddress, address);
+                await _shoppingCart.ClearShoppingCartAsync();
+                return View("OrderCompleted");
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
         }
     }
 }
