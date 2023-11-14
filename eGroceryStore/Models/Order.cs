@@ -12,7 +12,7 @@ namespace eGroceryStore.Models
 
             public string UserId { get; set; }
 
-            public StatusEnum Status { get; set; }
+            public StatusEnum Status { get; set; } = StatusEnum.Registred;
 
             public string Address { get; set; }
 

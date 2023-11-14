@@ -64,7 +64,7 @@ namespace eGroceryStore.Data.Services
             {
                 if (shoppingCartItem.Quantity > 1)
                 {
-                    shoppingCartItem.Quantity--;
+                    shoppingCartItem.Quantity--; // Decrease the quantity
                     product.ProductStock++;
                 }
                 else
@@ -72,8 +72,9 @@ namespace eGroceryStore.Data.Services
                     _context.ShoppingCartItems.Remove(shoppingCartItem);
                     product.ProductStock++;
                 }
+
+                _context.SaveChanges(); 
             }
-            _context.SaveChanges();
         }
 
         public List<ShoppingCartItem> GetShoppingCartItems()
