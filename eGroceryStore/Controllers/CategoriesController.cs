@@ -39,56 +39,42 @@ namespace eGroceryStore.Controllers
                 return RedirectToAction(nameof(Index));
         }
 
-
+        // GET: Categories/Edit/5
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var category = await _context.Categories.FindAsync(id);
+
             if (category == null)
             {
                 return NotFound();
             }
+
             return View(category);
         }
 
-
-        [Authorize(Roles = "admin")]
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Name")] Category category)
         {
-            if (id != category.Id)
+            if (!CategoryExists(id))
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            else
             {
-                try
-                {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _context.Update(category);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
         }
+
 
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)

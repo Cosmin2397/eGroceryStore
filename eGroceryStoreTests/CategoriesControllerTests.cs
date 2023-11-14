@@ -190,7 +190,7 @@ namespace eGroceryStoreTests
             };
 
             // Act
-            var result = await controller.Edit(1, category);
+            var result = await controller.Edit(4, category);
 
             // Assert
             Assert.IsType<NotFoundResult>(result);
