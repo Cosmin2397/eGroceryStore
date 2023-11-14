@@ -24,12 +24,17 @@ namespace eGroceryStore.Controllers
             _db = db;
         }
 
-        [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
+            if (!User.IsInRole("admin"))
+            {
+                return Unauthorized();
+            }
+
             var users = _db.Users.ToList();
             return View(users);
         }
+
 
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UserData()
