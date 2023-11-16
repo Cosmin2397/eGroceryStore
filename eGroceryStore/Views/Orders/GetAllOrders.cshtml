@@ -72,9 +72,6 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="statusModalLabel-@order.Id">Modify Status</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
                             </div>
                             <div class="modal-body">
                                 <form asp-action="ModifyOrderStatus" asp-route-id="@order.Id" method="post">
@@ -101,3 +98,24 @@
     </div>
 </div>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modals = document.querySelectorAll('.modal');
+            modals.forEach(function (modal) {
+                var id = modal.getAttribute('id');
+                var modalTriggerButton = document.querySelector(`button[data-bs-target="#${id}"]`);
+                if (modalTriggerButton) {
+                    modalTriggerButton.addEventListener('click', function () {
+                        var modalInstance = new bootstrap.Modal(document.getElementById(id));
+                        modalInstance.show();
+                    });
+                }
+            });
+        });
+    </script>
+}

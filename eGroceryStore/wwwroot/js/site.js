@@ -6,7 +6,3 @@ $("#menu-toggle").click(function (e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
 }).click();
-
-$(document).ready(function () {
-  $('#statusModal-YourOrderId').modal('show');
-});
