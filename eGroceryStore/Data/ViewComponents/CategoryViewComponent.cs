@@ -12,7 +12,6 @@ namespace eGroceryStore.ViewComponents
                 _context = applicationDbContext;
             }
 
-            // Return all categories to view
             public async Task<IViewComponentResult> InvokeAsync()
             {
                 return   View("Index", _context.Categories.ToList());

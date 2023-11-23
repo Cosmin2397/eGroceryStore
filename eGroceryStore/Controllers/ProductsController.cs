@@ -29,7 +29,6 @@ namespace eGroceryStore.Controllers
             return View(await appDbContext.ToListAsync());
         }
 
-        // Displays a list of products (for users with admin role)
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> ProductsList()
         {
@@ -37,7 +36,7 @@ namespace eGroceryStore.Controllers
             return View(await appDbContext.ToListAsync());
         }
 
-        // Displays details of a specific product
+        // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Products == null)
@@ -57,8 +56,9 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
-        // Creates a new product (for users with admin role)
+
         [Authorize(Roles = "admin")]
+        // GET: Products/Create
         public IActionResult Create()
         {
             ViewData["BrandId"] = new SelectList(_context.Brands, "Id", "Id");
@@ -66,7 +66,7 @@ namespace eGroceryStore.Controllers
             return View();
         }
 
-        // Saves a new product to the database
+        // POST: Products/Create
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -83,8 +83,8 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
-        // Edits an existing product (for users with admin role)
         [Authorize(Roles = "admin")]
+        // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Products == null)
@@ -102,8 +102,8 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
-        // Updates an existing product in the database
         [Authorize(Roles = "admin")]
+        // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,ProductPictureUrl,Name,Price,ProductStock,Description,Ingredients,BrandId,CategoryId")] Product product)
@@ -137,8 +137,9 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
-        // Deletes an existing product (for users with admin role)
+
         [Authorize(Roles = "admin")]
+        // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Products == null)
@@ -158,8 +159,9 @@ namespace eGroceryStore.Controllers
             return View(product);
         }
 
-        // Confirms deletion of a product from the database
+
         [Authorize(Roles = "admin")]
+        // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -173,12 +175,12 @@ namespace eGroceryStore.Controllers
             {
                 _context.Products.Remove(product);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        // Retrieves products by category ID
+
         public async Task<IActionResult> GetCategoryProducts(int id)
         {
             var categoryExists = await _context.Categories.AnyAsync(c => c.Id == id);
@@ -197,7 +199,8 @@ namespace eGroceryStore.Controllers
             return View(data);
         }
 
-        // Retrieves products by brand ID
+
+
         public async Task<IActionResult> GetBrandProducts(int id)
         {
             var brandExists = await _context.Brands.AnyAsync(c => c.Id == id);
@@ -216,11 +219,10 @@ namespace eGroceryStore.Controllers
             return View(data);
         }
 
-        // Checks if a product exists in the database
+
         private bool ProductExists(int id)
         {
-            return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
-
