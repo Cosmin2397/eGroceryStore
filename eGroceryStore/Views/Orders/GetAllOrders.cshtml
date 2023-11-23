@@ -6,15 +6,18 @@
 
 <div class="row">
     <div class="col-md-8 offset-2">
-        @if (Model.Count > 0)
+        @if (Model.Count > 0) // Checking if there are orders to display
         {
             <p>
-                <h4>List of all orders</h4>
+                <h4>List of all orders</h4> <!-- Title for the list of orders -->
             </p>
 
+            <!-- Table displaying order details -->
             <table class="table">
+                <!-- Table header -->
                 <thead>
                     <tr>
+                        <!-- Column headers -->
                         <th>Order ID</th>
                         <td>Items</td>
                         <th>Total</th>
@@ -26,15 +29,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var order in Model)
+                    @foreach (var order in Model) // Loop through each order in the model
                     {
                         <tr>
-                            <td class="align-middle">@order.Id</td>
+                            <!-- Displaying order information in table rows -->
+                            <td class="align-middle">@order.Id</td> 
                             <td class="align-middle">
+                                <!-- List of ordered items -->
                                 <ul style="list-style-type:none">
-                                    @foreach (var item in order.OrderItems)
+                                    @foreach (var item in order.OrderItems) 
                                     {
                                         <li>
+                                            <!-- Displaying item details -->
                                             <div class="alert alert-info" role="alert">
                                                 <span class="badge bg-success">@item.Quantity</span> [@item.Price.ToString("c")] - @item.Product.Name
                                             </div>
@@ -45,19 +51,21 @@
                             <td class="align-middle">
                                 @order.OrderItems.Select(m => m.Product.Price * m.Quantity).Sum().ToString("c")
                             </td>
-                            <td class="align-middle">@order.Email</td>
+                            <td class="align-middle">@order.Email</td> 
                             <td class="align-middle">
-                                @Html.DisplayFor(model => order.Status)
+                                @Html.DisplayFor(model => order.Status) 
                             </td>
                             <td class="align-middle">
-                                @Html.DisplayFor(model => order.Address)
+                                @Html.DisplayFor(model => order.Address) 
                             </td>
                             <td class="align-middle">
+                                <!-- Button to show order details -->
                                 <a class="btn btn-primary float-right" asp-action="GetOrderById" asp-route-id="@order.Id">
                                     <i class="bi bi-eye-fill"></i> Show Details
                                 </a>
-                             </td>
+                            </td>
                             <td class="align-middle">
+                                <!-- Button to change order status -->
                                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal-@order.Id">Change Status</button>
                             </td>
                         </tr>
@@ -65,8 +73,9 @@
                 </tbody>
             </table>
 
-            @foreach (var order in Model)
+            @foreach (var order in Model) // Loop through each order to create status modification modals
             {
+                <!-- Modal for modifying order status -->
                 <div class="modal fade" id="statusModal-@order.Id" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel-@order.Id" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -74,16 +83,18 @@
                                 <h5 class="modal-title" id="statusModalLabel-@order.Id">Modify Status</h5>
                             </div>
                             <div class="modal-body">
+                                <!-- Form to modify order status -->
                                 <form asp-action="ModifyOrderStatus" asp-route-id="@order.Id" method="post">
                                     <div class="form-group">
                                         <label for="status">New Status:</label>
+                                        <!-- Dropdown to select new status -->
                                         <select class="form-control" id="status" name="status">
                                             <option value="Registred">Registred</option>
                                             <option value="Processed">Processed</option>
                                             <option value="Delivered">Delivered</option>
                                         </select>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button> <!-- Button to save status changes -->
                                 </form>
                             </div>
                         </div>
@@ -93,6 +104,7 @@
         }
         else
         {
+            <!-- Display message if there are no orders -->
             <div class="text-center" style="padding-bottom:20px">No orders yet!</div>
         }
     </div>
@@ -103,6 +115,7 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
+    <!-- Script to handle modal functionality -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var modals = document.querySelectorAll('.modal');
@@ -110,6 +123,7 @@
                 var id = modal.getAttribute('id');
                 var modalTriggerButton = document.querySelector(`button[data-bs-target="#${id}"]`);
                 if (modalTriggerButton) {
+                    // Show modal when associated button is clicked
                     modalTriggerButton.addEventListener('click', function () {
                         var modalInstance = new bootstrap.Modal(document.getElementById(id));
                         modalInstance.show();

@@ -10,6 +10,7 @@
 
         <div class="row">
             <div class="col-md-8 offset-2"> 
+        <!-- Form for updating a brand -->
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="col-md-4 offset-4 text-center">
@@ -31,6 +32,7 @@
                 <input asp-for="Description" class="form-control form-control-lg" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <!-- Buttons for updating and navigating -->
             <div class="form-group" style="margin-top:10px;">
                         <input type="submit" value="Update" class="btn btn-primary btn-lg"  />
                         <a class="btn btn-secondary btn-lg" asp-action="Index">Show all</a>
@@ -44,10 +46,12 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
+        // Set image preview initially
         $(document).ready(function () {
             var output = document.getElementById("ImageUrlPreview");
             output.src = $("#LogoUrl").val();
         });
+        // Change image preview on input change
         $("#LogoUrl").on("change", function () {
             var output = document.getElementById("ImageUrlPreview");
             output.src = $(this).val();

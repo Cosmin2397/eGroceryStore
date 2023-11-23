@@ -1,18 +1,20 @@
-﻿@model eGroceryStore.Models.Order
-
+﻿@model eGroceryStore.Models.Order 
 <div class="row">
     <div class="col-md-8 offset-2">
         <div class="text-center">
-            <h5>Details for order no. @Model.Id</h5>
-            <h6>Email: @Model.Email</h6>
-            <h6>Status: @Model.Status</h6>
-            <h6>Delivery Address: @Model.Address</h6>
+            <!-- Displaying order details -->
+            <h5>Details for order no. @Model.Id</h5> 
+            <h6>Email: @Model.Email</h6> 
+            <h6>Status: @Model.Status</h6> 
+            <h6>Delivery Address: @Model.Address</h6> 
 
         </div>
 
+        <!-- Table displaying order items -->
         <table class="table">
             <thead>
                 <tr>
+                    <!-- Column headers -->
                     <th>Amount</th>
                     <th>Product</th>
                     <th>Price</th>
@@ -20,14 +22,15 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.OrderItems)
+                @foreach (var item in Model.OrderItems) 
                 {
-                <tr>
-                    <td class="align-middle">@item.Quantity</td>
-                    <td class="align-middle">@item.Product.Name</td>
-                    <td class="align-middle">@item.Product.Price.ToString("c")</td>
-                    <td class="align-middle">@((item.Quantity*item.Product.Price).ToString("c"))</td>
-                </tr>
+                    <tr>
+                        <!-- Displaying item details -->
+                        <td class="align-middle">@item.Quantity</td> 
+                        <td class="align-middle">@item.Product.Name</td> 
+                        <td class="align-middle">@item.Product.Price.ToString("c")</td> 
+                        <td class="align-middle">@((item.Quantity * item.Product.Price).ToString("c"))</td> 
+                    </tr>
                 }
             </tbody>
             <tfoot>
@@ -35,6 +38,7 @@
                     <td colspan="2"></td>
                     <td><b>Total:</b></td>
                     <td class="align-middle">
+                        <!-- Total price for all items in the order -->
                         @Model.OrderItems.Select(m => m.Product.Price * m.Quantity).Sum().ToString("c")
                     </td>
                     <td></td>

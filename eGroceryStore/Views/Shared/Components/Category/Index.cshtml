@@ -1,6 +1,13 @@
 ﻿@model List<Category>
 
-    @foreach(var item in Model)
-    {
-        <a class="list-group-item list-group-item-action" asp-controller="Products" asp-action="GetCategoryProducts" asp-route-id="@item.Id" style="font-size: 16px;">@item.Name</a>
-    }
+<!-- Loop through items in the Categories -->
+@foreach (var item in Model)
+{
+    <!-- Generate a link for each category products -->
+    <a class="list-group-item list-group-item-action"
+     asp-controller="Products" asp-action="GetCategoryProducts"
+    asp-route-id="@item.Id" style="font-size: 16px;">
+        <!-- Display the category name -->
+    @item.Name
+    </a>
+}

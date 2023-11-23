@@ -12,13 +12,15 @@
     <div class="col-md-8 offset-2">
         @if (Model.ShoppingCart.ShoppingCartItems.Count > 0 && signInManager.IsSignedIn(User))
         {
-        <div class="text-center">
-            <h2>You shopping cart summary</h2>
-        </div>
+            <div class="text-center">
+                <h2>You shopping cart summary</h2> 
+            </div>
         
+            <!-- Table displaying shopping cart items -->
             <table class="table">
                 <thead>
                     <tr>
+                        <!-- Column headers for shopping cart item details -->
                         <th>Selected amount</th>
                         <th>Product</th>
                         <th>Price</th>
@@ -27,82 +29,70 @@
                     </tr>
                 </thead>
                 <tbody>
-
-                    @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
+                    @foreach (var item in Model.ShoppingCart.ShoppingCartItems) 
                     {
                         <tr>
-                            <td class="align-middle">@item.Quantity</td>
-                            <td class="align-middle">@item.Product.Name</td>
-                            <td class="align-middle">@item.Product.Price.ToString("c")</td>
-                            <td class="align-middle">@(
-                        (item.Quantity * item.Product.Price).ToString("c"))</td>
+                            <!-- Displaying shopping cart item information in table rows -->
+                            <td class="align-middle">@item.Quantity</td> 
+                            <td class="align-middle">@item.Product.Name</td> 
+                            <td class="align-middle">@item.Product.Price.ToString("c")</td> 
+                            <td class="align-middle">@((item.Quantity * item.Product.Price).ToString("c"))</td> 
                             <td class="align-middle">
-                                @if (item.Product.ProductStock > 0)
+                                @if (item.Product.ProductStock > 0) 
                                 {
-                                    <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart"
-                           asp-route-id="@item.Product.Id"><i class="bi bi-cart-dash"></i>
-                                    </a>
-                                    <a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart"
-                           asp-route-id="@item.Product.Id"><i class="bi bi-cart-plus"></i>
-                                    </a>
+                                    <!-- Buttons to add or remove items from the shopping cart -->
+                                    <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.Product.Id"><i class="bi bi-cart-dash"></i></a>
+                                    <a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@item.Product.Id"><i class="bi bi-cart-plus"></i></a>
                                 }
                                 else
                                 {
-                                    <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart"
-                            asp-route-id="@item.Product.Id"><i class="bi bi-cart-dash"></i>
-                                    </a>
+                                    <!-- Button to remove item from the shopping cart -->
+                                    <a class="text-danger" asp-controller="Orders" asp-action="RemoveItemFromShoppingCart" asp-route-id="@item.Product.Id"><i class="bi bi-cart-dash"></i></a>
                                 }
                             </td>
                         </tr>
-                        }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="2"></td>
-                    <td><b>Total:</b></td>
-                    <td>
-                        @Model.ShoppingCartTotal.ToString("c")
-                    </td>
-                    <td></td>
-                </tr>
-            </tfoot>
-        </table>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td><b>Total:</b></td>
+                        <td>
+                            @Model.ShoppingCartTotal.ToString("c") <!-- Total price of items in the shopping cart -->
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
 
-        <div class="text-center">
-            <div class="btn-group">
-                @if(Model.ShoppingCartTotal > 0)
-                {
-                <a class="btn btn-outline-primary" asp-action="CompleteOrder">
-                    Complete order
-                </a>
-                <a class="btn btn-outline-success" asp-controller="Products" asp-action="Index">
-                    Add more items
-                </a>
-                }
-                else
-                {
-                <a class="btn btn-outline-success" asp-controller="Products" asp-action="Index">
-                    Add items
-                </a>
-                }
+            <div class="text-center">
+                <div class="btn-group">
+                    @if(Model.ShoppingCartTotal > 0) 
+                    {
+                        <!-- Buttons for completing order or adding more items -->
+                        <a class="btn btn-outline-primary" asp-action="CompleteOrder">Complete order</a>
+                        <a class="btn btn-outline-success" asp-controller="Products" asp-action="Index">Add more items</a>
+                    }
+                    else
+                    {
+                        <!-- Button for adding items if the cart is empty -->
+                        <a class="btn btn-outline-success" asp-controller="Products" asp-action="Index">Add items</a>
+                    }
+                </div>
             </div>
-        </div>
         }
         else if (Model.ShoppingCart.ShoppingCartItems.Count < 1 && signInManager.IsSignedIn(User))
         {
-        <div class="text-center" style="padding-bottom:20px">No products yet!</div>
+            <div class="text-center" style="padding-bottom:20px">No products yet!</div> <!-- Display message if there are no products in the cart -->
             <div class="text-center">
                 <div class="btn-group">
-                    <a class="btn btn-outline-success" asp-controller="Products" asp-action="Index">
-                            Add items
-                    </a>
+                    <a class="btn btn-outline-success" asp-controller="Products" asp-action="Index">Add items</a> <!-- Button to add items -->
                 </div>
             </div>
         }
         else
         {
-            <div class="text-center" style="padding-bottom:20px">Please register or login!</div>
+            <div class="text-center" style="padding-bottom:20px">Please register or login!</div> <!-- Display message for unauthenticated users -->
         }
-
     </div>
 </div>

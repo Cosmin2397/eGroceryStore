@@ -5,9 +5,11 @@
 @{ 
     ViewData["Title"] = "Products list";
 }
+<!-- Button to add a new product -->
 <div style="position:center; right: 25px; bottom: 25px;" class="text-white">
             <a class="btn btn-success text-white" asp-action="Create"> <i class="bi bi-cart-plus"></i> Add new product</a>
 </div>
+<!-- Bootstrap row with product list -->
 <div class="row">
     <div class="col-md-8 offset-2">
         <div class="text-center">
@@ -29,8 +31,10 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Iterate through each product in the Model -->
                 @foreach (var item in Model)
                 {
+                <!-- Display product details in table rows -->
                 <tr>
                     <td class="align-middle">@item.Id</td>
                     <td class="align-middle">@item.Name</td>
@@ -38,6 +42,7 @@
                     <td class="align-middle">@item.Brand.Name</td>
                     <td class="align-middle">@item.Price</td>
                     <td class="align-middle">@item.ProductStock</td>
+                    <!-- Buttons to view product details, edit or delete product -->
                     <td class="align-middle">
                         <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
                     </td>

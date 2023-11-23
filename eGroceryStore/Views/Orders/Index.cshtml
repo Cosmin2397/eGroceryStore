@@ -1,63 +1,70 @@
-﻿@model List<Order>
+﻿@model List<Order> 
 
-@{ 
-    ViewData["Title"] = "All orders";
+@{
+    ViewData["Title"] = "All orders"; 
 }
 
 <div class="row">
     <div class="col-md-8 offset-2">
-        @if (Model.Count > 0)
+        @if (Model.Count > 0) // Checking if there are orders to display
         {
-        <p>
-            <h4>List of all your orders</h4>
-        </p>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Address</th>
-                    <th>Items</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                    <th>Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var order in Model)
-                {
-                <tr>
-                    <td class="align-middle">@order.Id</td>
-                    <td class="align-middle">@order.Address</td>
-                    <td class="align-middle">
-                        <ul style="list-style-type:none">
-                            @foreach (var item in order.OrderItems)
-                            {
+            <p>
+                <h4>List of all your orders</h4> 
+            </p>
+
+            <!-- Table displaying order details -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <!-- Column headers for order details -->
+                        <th>Order ID</th>
+                        <th>Address</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model) 
+                    {
+                        <tr>
+                            <!-- Displaying order information in table rows -->
+                            <td class="align-middle">@order.Id</td> 
+                            <td class="align-middle">@order.Address</td> 
+                            <td class="align-middle">
+                                <ul style="list-style-type:none">
+                                    @foreach (var item in order.OrderItems) 
+                                    {
                                         <li>
+                                            <!-- Displaying item details -->
                                             <div class="alert alert-info" role="alert">
                                                 <span class="badge bg-success">@item.Quantity</span> [@item.Price.ToString("c")] - @item.Product.Name
                                             </div>
                                         </li>
-                                }
-                        </ul>
-                    </td>
-                    <td class="align-middle">
+                                    }
+                                </ul>
+                            </td>
+                            <td class="align-middle">
+                                <!-- Total price of the order -->
                         @order.OrderItems.Select(m => m.Product.Price * m.Quantity).Sum().ToString("c")
-                    </td>
-                    <td class="align-middle">@order.Status</td>
-                    <td class="align-middle">
-                        <a class="btn btn-primary float-right" asp-action="GetOrderById" asp-route-id="@order.Id">
+                            </td>
+                            <td class="align-middle">@order.Status</td> <!-- Order status -->
+                            <td class="align-middle">
+                                <!-- Button to show order details -->
+                                <a class="btn btn-primary float-right" asp-action="GetOrderById" asp-route-id="@order.Id">
                                     <i class="bi bi-eye-fill"></i> Show Details
-                        </a>
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         }
         else
         {
-        <div class="text-center" style="padding-bottom:20px">No orders yet!</div>
+            <!-- Display message if there are no orders -->
+            <div class="text-center" style="padding-bottom:20px">No orders yet!</div>
         }
-
     </div>
-</div> 
+</div>

@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<!-- Product details wrapper -->
 <div class = "main-wrapper">
         <div class = "container">
             <div class = "product-div">
@@ -22,6 +22,7 @@
                     <p class = "product-description">Description: @Model.Description</p>
                     <p class = "product-description">Ingredients: @Model.Ingredients</p>
                     <div class = "btn-groups">
+                    <!-- Buttons based on user role and product availability -->
                     @if (signInManager.IsSignedIn(User) && User.IsInRole("admin") && @Model.ProductStock > 0)
                     {
                         <a class="btn btn-primary btn-lg" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@Model.Id"><i class = "fas fa-shopping-cart"></i> Add to Cart</a>

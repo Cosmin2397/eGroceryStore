@@ -15,30 +15,39 @@
 </head>
 <body>
     <header>
+        <!-- Navbar -->
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
+                <!-- Menu Toggle Button -->
                 <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="bi bi-list"></i></a>
+                <!-- Brand -->
                 <a class="navbar-brand" asp-area="" asp-controller="Products" asp-action="Index">eGroceryStore</a>
+                <!-- Navbar Toggler -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <!-- Navbar Links -->
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        <!-- Products Link -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
                         </li>
+                        <!-- Brands Link -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Brands" asp-action="Index">Brands</a>
                         </li>
+                        <!-- Management Dropdown (shown for signed-in admin users) -->
                         @if (signInManager.IsSignedIn(User) && User.IsInRole("admin"))
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="bi bi-gear"></i> Management
                                 </a>
-
+                                <!-- Dropdown Menu -->
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <!-- Management Options -->
                                     <a class="dropdown-item" asp-controller="Products" asp-action="ProductsList"><i class="bi bi-bucket"></i> Products</a>
                                     <a class="dropdown-item" asp-controller="Brands" asp-action="BrandsList"><i class="bi bi-card-image"></i> Brands</a>
                                     <a class="dropdown-item" asp-controller="Categories" asp-action="Index"><i class="bi bi-arrow-down-square"></i> Categories</a>
@@ -47,30 +56,35 @@
                                 </div>
                             </li>
                         }
-                        </ul>
-                        <ul class="navbar-nav">
-                            @await Component.InvokeAsync("ShoppingCartSummary") 
-                        </ul>
-                 </div>
-
-               
-
+                    </ul>
+                    <!-- Shopping Cart Summary -->
+                    <ul class="navbar-nav">
+                        @await Component.InvokeAsync("ShoppingCartSummary")
+                    </ul>
+                </div>
+                <!-- Login Partial View -->
                 <partial name="_LoginPartial" />
             </div>
         </nav>
     </header>
+
+    <!-- Sidebar and Main Content -->
     <div id="wrapper">
         <div id="sidebar-wrapper">
+            <!-- Category Component -->
             <ul class="sidebar-nav">
                 @await Component.InvokeAsync("Category")
             </ul>
         </div>
         <div class="container">
             <main role="main" class="pb-3">
+                <!-- Rendering Body Content -->
                 @RenderBody()
             </main>
         </div>
+    </div>
 
+    <!-- Footer -->
     <footer class="border-top footer text-center">
         <div class="container">
             &copy; 2023 - eGroceryStore

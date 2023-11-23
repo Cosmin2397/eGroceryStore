@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<!-- Brand details wrapper -->
 <div class = "main-wrapper">
         <div class = "container">
             <div class = "product-div">
@@ -16,7 +16,7 @@
                 <div class = "product-div-right">
                     <span class = "product-name">@Model.Name</span>
                     <p class = "product-description">Description: @Model.Description</p>
-
+                <!-- Buttons based on user role  -->
                 <div class = "btn-groups">
                  @if (signInManager.IsSignedIn(User) && User.IsInRole("admin"))
                     {

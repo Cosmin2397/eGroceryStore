@@ -12,6 +12,7 @@
             <h2>Users List</h2>
         </div>
 
+        <!-- Table for displaying user information -->
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -24,8 +25,10 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Condition for empty Model -->
                 @if(Model is null)
                 {
+                    <!-- Display message if no orders -->
                     <tr>No orders yet!</tr>
                 }
                 else
@@ -39,6 +42,7 @@
                     <td class="align-middle">@item.Address</td>
                     <td class="align-middle">@item.PhoneNumber</td>
                     <th>
+                        <!-- Button to view user orders -->
                         <a class="btn btn-primary float-right" asp-controller="Orders" asp-action="GetOrderByUserId" asp-route-user="@item.Id">
                             <i class="bi bi-eye-fill"></i> Show Orders
                         </a>
