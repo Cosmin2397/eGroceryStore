@@ -15,6 +15,5 @@ namespace eGroceryStore.Models
 
         //Relationships
         public List<Product>? Products { get; set; }
-        
     }
 }

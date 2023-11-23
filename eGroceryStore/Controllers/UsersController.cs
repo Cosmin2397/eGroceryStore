@@ -24,7 +24,6 @@ namespace eGroceryStore.Controllers
             _db = db;
         }
 
-        // Shows a list of users (only for users with admin role)
         public IActionResult Index()
         {
             if (!User.IsInRole("admin"))
@@ -36,11 +35,11 @@ namespace eGroceryStore.Controllers
             return View(users);
         }
 
-        // Displays user data (for users with admin role)
+
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> UserData()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await  _userManager.GetUserAsync(HttpContext.User);
             return View(user);
         }
 
