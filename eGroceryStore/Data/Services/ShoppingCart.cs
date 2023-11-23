@@ -16,6 +16,7 @@ namespace eGroceryStore.Data.Services
             _context = context;
         }
 
+        // Static method to get the shopping cart instance from the session
         public static ShoppingCart GetShoppingCart(IServiceProvider services)
         {
             ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
@@ -27,7 +28,7 @@ namespace eGroceryStore.Data.Services
             return new ShoppingCart(context) { ShoppingCartId = cartId };
         }
 
-
+        // Adds a product to the shopping cart
         public void AddToCart(Product product)
         {
             var shoppingCartItem = _context.ShoppingCartItems.FirstOrDefault(n => n.Product.Id == product.Id && n.ShoppingCartId == ShoppingCartId);
@@ -55,7 +56,7 @@ namespace eGroceryStore.Data.Services
             _context.SaveChanges();
         }
 
-
+        // Removes a product from the shopping cart
         public void RemoveFromCart(Product product)
         {
             var shoppingCartItem = _context.ShoppingCartItems.FirstOrDefault(n => n.Product.Id == product.Id && n.ShoppingCartId == ShoppingCartId);
@@ -77,13 +78,16 @@ namespace eGroceryStore.Data.Services
             }
         }
 
+        // Retrieves shopping cart items
         public List<ShoppingCartItem> GetShoppingCartItems()
         {
             return ShoppingCartItems ?? (ShoppingCartItems = _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).Include(n => n.Product).ToList());
         }
 
+        // Calculates the total cost of items in the shopping cart
         public double GetShoppingCartTotal() => _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).Select(n => n.Product.Price * n.Quantity).Sum();
 
+        // Clears the shopping cart asynchronously
         public async Task ClearShoppingCartAsync()
         {
             var items = await _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).ToListAsync();

@@ -7,11 +7,13 @@ namespace eGroceryStore.Data.Services
     public class OrdersService : IOrdersService
     {
         private readonly AppDbContext _context;
+
         public OrdersService(AppDbContext context)
         {
             _context = context;
         }
 
+        // Retrieves all orders (only for users with admin role)
         [Authorize(Roles = "admin")]
         public async Task<List<Order>> GetOrdersAsync()
         {
@@ -19,18 +21,21 @@ namespace eGroceryStore.Data.Services
             return orders;
         }
 
+        // Retrieves orders by user ID
         public async Task<List<Order>> GetOrdersByUserIdAsync(string userId)
         {
             var orders = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Product).Where(n => n.UserId == userId).ToListAsync();
             return orders;
         }
 
+        // Retrieves an order by its ID
         public async Task<Order> GetOrdersByIdAsync(int id)
         {
             var order = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Product).FirstOrDefaultAsync(n => n.Id == id);
             return order;
         }
 
+        // Stores a new order in the database
         public async Task StoreOrderAsync(List<ShoppingCartItem> items, string userId, string userEmailAddress, string address)
         {
             var order = new Order()
@@ -57,7 +62,7 @@ namespace eGroceryStore.Data.Services
             await _context.SaveChangesAsync();
         }
 
-
+        // Updates the status of an existing order
         public async Task UpdateOrderAsync(int orderId, StatusEnum newStatus)
         {
             var order = await _context.Orders.FindAsync(orderId);
@@ -76,3 +81,4 @@ namespace eGroceryStore.Data.Services
         }
     }
 }
+

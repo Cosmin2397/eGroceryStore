@@ -25,15 +25,17 @@ namespace eGroceryStore.Controllers
             _userManager = userManager;
         }
 
+        // Shows the current user's orders
         [Authorize]
         public async Task<IActionResult> Index()
         {
             ApplicationUser user = await GetCurrentUserAsync();
             var currentUserId = user.Id;
             var orders = await _ordersService.GetOrdersByUserIdAsync(currentUserId);
-            return View(orders);    
+            return View(orders);
         }
 
+        // Retrieves orders by user ID
         [Authorize]
         public async Task<IActionResult> GetOrderByUserId(string? user)
         {
@@ -41,6 +43,7 @@ namespace eGroceryStore.Controllers
             return View(orders);
         }
 
+        // Retrieves an order by its ID
         [Authorize]
         public async Task<IActionResult> GetOrderById(int id)
         {
@@ -52,14 +55,15 @@ namespace eGroceryStore.Controllers
             return View(order);
         }
 
+        // Shows all orders (for users with admin role)
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetAllOrders()
         {
-
             var orders = await _ordersService.GetOrdersAsync();
             return View(orders);
         }
 
+        // Modifies the status of an order (for users with admin role)
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> ModifyOrderStatus(int id, string status)
@@ -68,7 +72,6 @@ namespace eGroceryStore.Controllers
             {
                 var newStatus = Enum.Parse<StatusEnum>(status);
                 await _ordersService.UpdateOrderAsync(id, newStatus);
-
                 return RedirectToAction("GetAllOrders");
             }
             catch (Exception ex)
@@ -77,6 +80,7 @@ namespace eGroceryStore.Controllers
             }
         }
 
+        // Shows the shopping cart items for the current user
         [Authorize]
         public IActionResult ShoppingCart()
         {
@@ -92,6 +96,7 @@ namespace eGroceryStore.Controllers
             return View(response);
         }
 
+        // Adds an item to the shopping cart for the current user
         [Authorize]
         public async Task<IActionResult> AddItemToShoppingCart(int id)
         {
@@ -104,6 +109,7 @@ namespace eGroceryStore.Controllers
             return RedirectToAction(nameof(ShoppingCart));
         }
 
+        // Removes an item from the shopping cart for the current user
         [Authorize]
         public async Task<IActionResult> RemoveItemFromShoppingCart(int id)
         {
@@ -116,6 +122,7 @@ namespace eGroceryStore.Controllers
             return RedirectToAction(nameof(ShoppingCart));
         }
 
+        // Completes the order for the current user
         [Authorize]
         public async Task<IActionResult> CompleteOrder()
         {

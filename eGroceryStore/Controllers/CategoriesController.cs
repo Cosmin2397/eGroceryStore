@@ -1,5 +1,4 @@
-﻿
-using eGroceryStore.Data;
+﻿using eGroceryStore.Data;
 using eGroceryStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +15,7 @@ namespace eGroceryStore.Controllers
             _context = context;
         }
 
+        // Shows a list of categories and their associated products
         [Authorize]
         public async Task<IActionResult> Index()
         {
@@ -23,23 +23,25 @@ namespace eGroceryStore.Controllers
             return View(data);
         }
 
+        // Creates a new category (for users with admin role)
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
+        // Saves a new category to the database
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
         {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+            _context.Add(category);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Categories/Edit/5
+        // Edits an existing category (for users with admin role)
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -58,6 +60,7 @@ namespace eGroceryStore.Controllers
             return View(category);
         }
 
+        // Updates an existing category in the database
         [HttpPost]
         [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
@@ -75,7 +78,7 @@ namespace eGroceryStore.Controllers
             }
         }
 
-
+        // Deletes an existing category (for users with admin role)
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -94,6 +97,7 @@ namespace eGroceryStore.Controllers
             return View(category);
         }
 
+        // Confirms deletion of a category from the database
         [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -108,14 +112,16 @@ namespace eGroceryStore.Controllers
             {
                 _context.Categories.Remove(category);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        // Checks if a category exists in the database
         private bool CategoryExists(int id)
         {
-          return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
+

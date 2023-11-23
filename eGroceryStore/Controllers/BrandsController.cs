@@ -20,23 +20,26 @@ namespace eGroceryStore.Controllers
             _context = context;
         }
 
-        // GET: Brands
-        public async Task<IActionResult> Index()
-        {
-              return _context.Brands != null ? 
-                          View(await _context.Brands.ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.Brands'  is null.");
-        }
-
+        // Returns a list of brands (for authorized users)
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> BrandsList()
         {
+            // Checks if the list of brands is not null and returns an appropriate view
             return _context.Brands != null ?
                         View(await _context.Brands.ToListAsync()) :
                         Problem("Entity set 'AppDbContext.Brands'  is null.");
         }
 
-        // GET: Brands/Details/5
+        // Returns all available brands
+        public async Task<IActionResult> Index()
+        {
+            // Checks if the list of brands is not null and returns an appropriate view
+            return _context.Brands != null ?
+                          View(await _context.Brands.ToListAsync()) :
+                          Problem("Entity set 'AppDbContext.Brands'  is null.");
+        }
+
+        // Shows details of a specific brand
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -55,17 +58,14 @@ namespace eGroceryStore.Controllers
             return View(brand);
         }
 
-
-
+        // Creates a new brand (for authorized users)
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Brands/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Saves a new brand to the database
         [HttpPost]
         [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
@@ -80,11 +80,11 @@ namespace eGroceryStore.Controllers
             return View(brand);
         }
 
-
-        // GET: Brands/Edit/5
+        // Edits an existing brand (for authorized users)
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
+            // Checks if the id is null or if the brand does not exist
             if (id == null)
             {
                 return NotFound();
@@ -100,7 +100,7 @@ namespace eGroceryStore.Controllers
             return View(brand);
         }
 
-        // POST: Brands/Edit/5
+        // Updates a brand in the database
         [HttpPost]
         [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
@@ -134,9 +134,8 @@ namespace eGroceryStore.Controllers
             return View(brand);
         }
 
-
+        // Deletes an existing brand (for authorized users)
         [Authorize(Roles = "admin")]
-        // GET: Brands/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Brands == null)
@@ -154,6 +153,7 @@ namespace eGroceryStore.Controllers
             return View(brand);
         }
 
+        // Confirms deletion of a brand from the database
         [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -168,14 +168,15 @@ namespace eGroceryStore.Controllers
             {
                 _context.Brands.Remove(brand);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        // Checks if a brand exists in the database
         private bool BrandExists(int id)
         {
-          return (_context.Brands?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Brands?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
